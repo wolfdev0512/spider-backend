@@ -57,23 +57,23 @@ router.post("/charge", account.activateAccount);
 router.post("/sendEmail", mail.sendEmail);
 // Payment
 const square_1 = require("square");
-const crypto_1 = require("crypto");
 const { paymentsApi } = new square_1.Client({
     accessToken: "EAAAl1UxjZJcpbFJdDa8m_LuFD-7VcNcsv5_LdkfPR6W_Ad6exEm_45MnJa_TZlh",
     environment: square_1.Environment.Sandbox
 });
 router.post("/payment", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
     console.log("start");
-    const { result } = yield paymentsApi.createPayment({
-        idempotencyKey: (0, crypto_1.randomUUID)(),
-        sourceId: req.body.sourceId,
-        amountMoney: {
-            currency: "USD",
-            amount: BigInt(100)
-        }
-    });
-    console.log((_a = result.payment) === null || _a === void 0 ? void 0 : _a.status);
-    res.json((_b = result.payment) === null || _b === void 0 ? void 0 : _b.status);
+    console.log(req.body.amount);
+    // const { result } = await paymentsApi.createPayment({
+    //     idempotencyKey: randomUUID(),
+    //     sourceId: req.body.sourceId,
+    //     amountMoney: {
+    //         currency: "USD",
+    //         amount: BigInt(100)
+    //     }
+    // });
+    // console.log(result.payment?.status);
+    // res.json(result.payment?.status);
+    res.json(req.body.amount);
 }));
 exports.default = router;

@@ -42,16 +42,18 @@ const { paymentsApi } = new Client({
 
 router.post("/payment", async (req, res) => {
     console.log("start")
-    const { result } = await paymentsApi.createPayment({
-        idempotencyKey: randomUUID(),
-        sourceId: req.body.sourceId,
-        amountMoney: {
-            currency: "USD",
-            amount: BigInt(100)
-        }
-    });
-    console.log(result.payment?.status);
-    res.json(result.payment?.status);
+    console.log(req.body.amount)
+    // const { result } = await paymentsApi.createPayment({
+    //     idempotencyKey: randomUUID(),
+    //     sourceId: req.body.sourceId,
+    //     amountMoney: {
+    //         currency: "USD",
+    //         amount: BigInt(100)
+    //     }
+    // });
+    // console.log(result.payment?.status);
+    // res.json(result.payment?.status);
+    res.json(req.body.amount)
 });
 
 export default router;
