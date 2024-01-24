@@ -29,4 +29,29 @@ router.post("/charge", account.activateAccount);
 
 router.post("/sendEmail", mail.sendEmail);
 
+// Payment
+
+import { Client, Environment } from "square";
+import { randomUUID } from "crypto";
+
+const { paymentsApi } = new Client({
+    accessToken: "EAAAl1UxjZJcpbFJdDa8m_LuFD-7VcNcsv5_LdkfPR6W_Ad6exEm_45MnJa_TZlh",
+    environment: Environment.Sandbox
+})
+
+
+router.post("/payment", async (req, res) => {
+    console.log("start")
+    const { result } = await paymentsApi.createPayment({
+        idempotencyKey: randomUUID(),
+        sourceId: req.body.sourceId,
+        amountMoney: {
+            currency: "USD",
+            amount: BigInt(100)
+        }
+    });
+    console.log(result.payment?.status);
+    res.json(result.payment?.status);
+});
+
 export default router;

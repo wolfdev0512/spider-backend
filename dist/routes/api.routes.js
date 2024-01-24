@@ -22,6 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const auth = __importStar(require("../controllers/auth.controller"));
@@ -46,4 +55,25 @@ router.post("/admin/editUser", admin.editUser);
 router.post("/charge", account.activateAccount);
 // Sending Mail Action
 router.post("/sendEmail", mail.sendEmail);
+// Payment
+const square_1 = require("square");
+const crypto_1 = require("crypto");
+const { paymentsApi } = new square_1.Client({
+    accessToken: "EAAAl1UxjZJcpbFJdDa8m_LuFD-7VcNcsv5_LdkfPR6W_Ad6exEm_45MnJa_TZlh",
+    environment: square_1.Environment.Sandbox
+});
+router.post("/payment", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    console.log("start");
+    const { result } = yield paymentsApi.createPayment({
+        idempotencyKey: (0, crypto_1.randomUUID)(),
+        sourceId: req.body.sourceId,
+        amountMoney: {
+            currency: "USD",
+            amount: BigInt(100)
+        }
+    });
+    console.log((_a = result.payment) === null || _a === void 0 ? void 0 : _a.status);
+    res.json((_b = result.payment) === null || _b === void 0 ? void 0 : _b.status);
+}));
 exports.default = router;
