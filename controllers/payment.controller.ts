@@ -10,7 +10,7 @@ const { paymentsApi } = new Client({
 export const sendMoney = async (req: Request, res: Response) => {
   try {
     const {
-      result: { payment },
+      result
     } = await paymentsApi.createPayment({
       idempotencyKey: randomUUID(),
       sourceId: req.body.sourceId,
@@ -20,17 +20,10 @@ export const sendMoney = async (req: Request, res: Response) => {
       },
     });
 
-    const result = JSON.stringify(
-      payment,
-      (key, value) => {
-        return typeof value === "bigint" ? value.toString() : value;
-      },
-      4
-    );
     res.json({
-      result,
+      data: result.payment?.status,
     });
   } catch (error) {
-    res.json(error);
+    res.json({ data: error});
   }
 };

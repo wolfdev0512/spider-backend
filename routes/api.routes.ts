@@ -32,7 +32,6 @@ router.post("/charge", account.activateAccount);
 router.post("/sendEmail", mail.sendEmail);
 
 // Payment
-
 router.post("/payment", payment.sendMoney);
 
 export default router;
