@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import User from "../models/User";
+import Order from "../models/Order";
 import { generateToken } from "../service/helper";
 import dotenv from "dotenv";
 dotenv.config();
-
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 export const activateAccount = async (req: Request, res: Response) => {
   const user = await User.findById({ _id: req.body.userId });
@@ -15,33 +14,51 @@ export const activateAccount = async (req: Request, res: Response) => {
     });
   } else {
     const expireDate = new Date();
-    expireDate.setDate(expireDate.getDate() + req.body.month * 30);
+    console.log(expireDate);
+    expireDate.setMonth(expireDate.getMonth() + Number(req.body.amount) / 50);
+
+    console.log(expireDate);
+
     user.expireDate = expireDate;
     user.isActive = true;
-
-    try {
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: req.body.money * 100,
-        currency: "usd",
-        payment_method: req.body.paymentMethod,
-        return_url: process.env.HOST_URL,
-        confirm: true,
-      });
-      user.deposit += req.body.money;
-      await user.save();
-      res.json({
-        success: true,
-        client_secret: paymentIntent.client_secret,
-        token: generateToken(user),
-        message: `Successfully activated. Your account's activate date is ${new Date(
-          user.expireDate
-        ).toDateString()}`,
-      });
-    } catch (error: any) {
-      res.json({
-        success: false,
-        message: "Error happened while working on payment",
-      });
-    }
+    user.deposit += req.body.amount;
+    await user.save();
+    res.json({
+      success: true,
+      token: generateToken(user),
+      message: `Successfully activated. Your account's activate date is ${new Date(
+        user.expireDate
+      ).toDateString()}`,
+    });
   }
+};
+
+//////////////////////////////////////
+
+export const addOrder = async (req: Request, res: Response) => {
+  const { userId, company, address, name, email, link, size } = req.body;
+
+  const payload = {
+    userId: userId,
+    company: company,
+    address: address,
+    name: name,
+    email: email,
+    link: link,
+    size: size,
+  };
+
+  const newOrder = new Order(payload);
+  await newOrder.save();
+
+  return res.json({
+    success: true,
+    message: "Successfully Added!",
+  });
+};
+
+export const getAllOrder = async (req: Request, res: Response) => {
+  Order.find().then((models: any) => {
+    res.json({ data: models });
+  });
 };

@@ -17,15 +17,19 @@ router.post("/auth/signup", auth.signUp);
 router.post("/auth/signin", auth.signIn);
 router.post("/auth/resendVeriEmail", auth.resendVeriEmail);
 router.post("/auth/checkEmailVerified", auth.checkEmailVerified);
+router.post("/auth/forgotPassword", auth.forgotPassword);
+router.post("/auth/resetPassword", auth.resetPassword);
+
 // Admin Action
 
 router.post("/admin/getAllUser", admin.getAllUser);
 router.post("/admin/removeUser", admin.removeUser);
 router.post("/admin/editUser", admin.editUser);
 
-// Account Activate / Stripe
-
-router.post("/charge", account.activateAccount);
+// Account
+router.post("/activate", account.activateAccount);
+router.post("/single", account.addOrder);
+router.get("/single", account.getAllOrder);
 
 // Sending Mail Action
 

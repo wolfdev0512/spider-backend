@@ -12,12 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.activateAccount = void 0;
+exports.getAllOrder = exports.addOrder = exports.activateAccount = void 0;
 const User_1 = __importDefault(require("../models/User"));
+const Order_1 = __importDefault(require("../models/Order"));
 const helper_1 = require("../service/helper");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const activateAccount = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield User_1.default.findById({ _id: req.body.userId });
     if (!user) {
@@ -28,32 +28,44 @@ const activateAccount = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
     else {
         const expireDate = new Date();
-        expireDate.setDate(expireDate.getDate() + req.body.month * 30);
+        console.log(expireDate);
+        expireDate.setMonth(expireDate.getMonth() + Number(req.body.amount) / 50);
+        console.log(expireDate);
         user.expireDate = expireDate;
         user.isActive = true;
-        try {
-            const paymentIntent = yield stripe.paymentIntents.create({
-                amount: req.body.money * 100,
-                currency: "usd",
-                payment_method: req.body.paymentMethod,
-                return_url: process.env.HOST_URL,
-                confirm: true,
-            });
-            user.deposit += req.body.money;
-            yield user.save();
-            res.json({
-                success: true,
-                client_secret: paymentIntent.client_secret,
-                token: (0, helper_1.generateToken)(user),
-                message: `Successfully activated. Your account's activate date is ${new Date(user.expireDate).toDateString()}`,
-            });
-        }
-        catch (error) {
-            res.json({
-                success: false,
-                message: "Error happened while working on payment",
-            });
-        }
+        user.deposit += req.body.amount;
+        yield user.save();
+        res.json({
+            success: true,
+            token: (0, helper_1.generateToken)(user),
+            message: `Successfully activated. Your account's activate date is ${new Date(user.expireDate).toDateString()}`,
+        });
     }
 });
 exports.activateAccount = activateAccount;
+//////////////////////////////////////
+const addOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId, company, address, name, email, link, size } = req.body;
+    const payload = {
+        userId: userId,
+        company: company,
+        address: address,
+        name: name,
+        email: email,
+        link: link,
+        size: size,
+    };
+    const newOrder = new Order_1.default(payload);
+    yield newOrder.save();
+    return res.json({
+        success: true,
+        message: "Successfully Added!",
+    });
+});
+exports.addOrder = addOrder;
+const getAllOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    Order_1.default.find().then((models) => {
+        res.json({ data: models });
+    });
+});
+exports.getAllOrder = getAllOrder;
