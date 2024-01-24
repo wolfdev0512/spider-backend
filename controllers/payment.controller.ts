@@ -9,22 +9,19 @@ const { paymentsApi } = new Client({
 
 export const sendMoney = async (req: Request, res: Response) => {
   try {
-    // const {
-    //   result
-    // } = await paymentsApi.createPayment({
-    //   idempotencyKey: randomUUID(),
-    //   sourceId: req.body.sourceId,
-    //   amountMoney: {
-    //     currency: "USD",
-    //     amount: BigInt(req.body.amount),
-    //   },
-    // });
+    const {
+      result
+    } = await paymentsApi.createPayment({
+      idempotencyKey: randomUUID(),
+      sourceId: req.body.sourceId,
+      amountMoney: {
+        currency: "USD",
+        amount: BigInt(req.body.amount),
+      },
+    });
 
-    // res.json({
-    //   data: result.payment?.status,
-    // });
     res.json({
-      data:"COMPLETED",
+      data: result.payment?.status,
     });
   } catch (error) {
     res.json({ data: error});
