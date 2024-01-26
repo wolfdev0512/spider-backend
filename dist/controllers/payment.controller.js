@@ -11,27 +11,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendMoney = void 0;
 const square_1 = require("square");
+const crypto_1 = require("crypto");
 const { paymentsApi } = new square_1.Client({
     accessToken: process.env.SQUARE_ACCESS_TOKEN,
     environment: square_1.Environment.Sandbox,
 });
 const sendMoney = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        // const {
-        //   result
-        // } = await paymentsApi.createPayment({
-        //   idempotencyKey: randomUUID(),
-        //   sourceId: req.body.sourceId,
-        //   amountMoney: {
-        //     currency: "USD",
-        //     amount: BigInt(req.body.amount),
-        //   },
-        // });
-        // res.json({
-        //   data: result.payment?.status,
-        // });
+        const { result } = yield paymentsApi.createPayment({
+            idempotencyKey: (0, crypto_1.randomUUID)(),
+            sourceId: req.body.sourceId,
+            amountMoney: {
+                currency: "USD",
+                amount: BigInt(req.body.amount),
+            },
+        });
         res.json({
-            data: "COMPLETED",
+            data: (_a = result.payment) === null || _a === void 0 ? void 0 : _a.status,
         });
     }
     catch (error) {

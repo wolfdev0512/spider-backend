@@ -15,8 +15,6 @@ const router = Router();
 
 router.post("/auth/signup", auth.signUp);
 router.post("/auth/signin", auth.signIn);
-router.post("/auth/resendVeriEmail", auth.resendVeriEmail);
-router.post("/auth/checkEmailVerified", auth.checkEmailVerified);
 router.post("/auth/forgotPassword", auth.forgotPassword);
 router.post("/auth/resetPassword", auth.resetPassword);
 
