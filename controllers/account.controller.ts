@@ -36,10 +36,9 @@ export const activateAccount = async (req: Request, res: Response) => {
 //////////////////////////////////////
 
 export const addOrder = async (req: Request, res: Response) => {
-  const { userId, company, address, name, email, link, size } = req.body;
+  const { company, address, name, email, link, size } = req.body;
 
   const payload = {
-    userId: userId,
     company: company,
     address: address,
     name: name,

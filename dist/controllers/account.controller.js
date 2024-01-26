@@ -45,9 +45,8 @@ const activateAccount = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.activateAccount = activateAccount;
 //////////////////////////////////////
 const addOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { userId, company, address, name, email, link, size } = req.body;
+    const { company, address, name, email, link, size } = req.body;
     const payload = {
-        userId: userId,
         company: company,
         address: address,
         name: name,

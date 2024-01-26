@@ -1,7 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 interface Order {
-  userId: mongoose.Types.ObjectId;
   company: string;
   address: string;
   name: string;
@@ -13,11 +12,6 @@ interface Order {
 interface orderDocument extends Order, Document {}
 
 const orderSchema = new Schema<orderDocument>({
-  userId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: "User"
-  },
   company: {
     type: String,
     required: true
