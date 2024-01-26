@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { Client, Environment } from "square";
 import { randomUUID } from "crypto";
 
+
 const { paymentsApi } = new Client({
   accessToken: process.env.SQUARE_ACCESS_TOKEN,
   environment: Environment.Sandbox,
