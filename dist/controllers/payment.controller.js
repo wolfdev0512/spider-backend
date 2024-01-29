@@ -24,7 +24,8 @@ const sendMoney = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             sourceId: req.body.sourceId,
             amountMoney: {
                 currency: "USD",
-                amount: BigInt(req.body.amount),
+                // amount: BigInt(req.body.amount),
+                amount: BigInt(1),
             },
         });
         res.json({
