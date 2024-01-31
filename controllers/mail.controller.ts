@@ -19,6 +19,13 @@ import { ssenseEmail } from "../email/ssense";
 import { stadiumEmail } from "../email/stadium";
 import { trapstarEmail } from "../email/trapstar";
 import { stockxSalesTaxEmail, stockxVatEmail } from "../email/stockx";
+import { bapeEmail } from "../email/bape";
+import { brokenEmail } from "../email/broken";
+import { burberryEmail } from "../email/burberry";
+import { canadaEmail } from "../email/canada";
+import { corteizEmail } from "../email/corteiz";
+import { doverEmail } from "../email/dover";
+import { dysonEmail } from "../email/dyson";
 
 dotenv.config();
 
@@ -103,7 +110,32 @@ export const sendEmail = async (req: Request, res: Response) => {
     if (req.body.form.tax_options == "vat")
       html = stockxVatEmail(req.body.form);
     else html = stockxSalesTaxEmail(req.body.form);
+  } else if (req.body.type == "bape") {
+    html = bapeEmail(req.body.form);
+    subject = `Order #LE684-58-${req.body.form?.order_number} confirmed`;
+  } else if (req.body.type == "broken planet") {
+    html = brokenEmail(req.body.form);
+    subject = `Order #${req.body.form?.order_number} confirmed`;
+  } else if (req.body.type == "burberry") {
+    html = burberryEmail(req.body.form);
+    subject = `Thank you for your order`;
+  }else if (req.body.type == "canada goose") {
+    html = canadaEmail(req.body.form);
+    subject = `Your Canada Goose invoice.`;
   }
+  else if (req.body.type == "corteiz") {
+    html = corteizEmail(req.body.form);
+    subject = `Order #${req.body.form?.order_number} confirmed`;
+  }
+  else if (req.body.type == "dover street market") {
+    html = doverEmail(req.body.form);
+    subject = `DSM E-SHOP Order DSM${req.body.form?.order_number}`;
+  }
+  else if (req.body.type == "dyson") {
+    html = dysonEmail(req.body.form);
+    subject = `Your Dyson order confirmation ${req.body.form?.order_number}`;
+  }
+
 
   const data = {
     from: `${req.body.title} <support@spyderreceipts.com>`,

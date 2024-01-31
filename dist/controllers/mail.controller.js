@@ -32,6 +32,13 @@ const ssense_1 = require("../email/ssense");
 const stadium_1 = require("../email/stadium");
 const trapstar_1 = require("../email/trapstar");
 const stockx_1 = require("../email/stockx");
+const bape_1 = require("../email/bape");
+const broken_1 = require("../email/broken");
+const burberry_1 = require("../email/burberry");
+const canada_1 = require("../email/canada");
+const corteiz_1 = require("../email/corteiz");
+const dover_1 = require("../email/dover");
+const dyson_1 = require("../email/dyson");
 dotenv_1.default.config();
 const fs = require("fs");
 const mailgun = require("mailgun-js")({
@@ -39,7 +46,7 @@ const mailgun = require("mailgun-js")({
     domain: "spyderreceipts.com",
 });
 const sendEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
     console.log(req.body);
     const user = yield User_1.default.findById({ _id: req.body.userId });
     if (!user) {
@@ -129,6 +136,34 @@ const sendEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             html = (0, stockx_1.stockxVatEmail)(req.body.form);
         else
             html = (0, stockx_1.stockxSalesTaxEmail)(req.body.form);
+    }
+    else if (req.body.type == "bape") {
+        html = (0, bape_1.bapeEmail)(req.body.form);
+        subject = `Order #LE684-58-${(_j = req.body.form) === null || _j === void 0 ? void 0 : _j.order_number} confirmed`;
+    }
+    else if (req.body.type == "broken planet") {
+        html = (0, broken_1.brokenEmail)(req.body.form);
+        subject = `Order #${(_k = req.body.form) === null || _k === void 0 ? void 0 : _k.order_number} confirmed`;
+    }
+    else if (req.body.type == "burberry") {
+        html = (0, burberry_1.burberryEmail)(req.body.form);
+        subject = `Thank you for your order`;
+    }
+    else if (req.body.type == "canada goose") {
+        html = (0, canada_1.canadaEmail)(req.body.form);
+        subject = `Your Canada Goose invoice.`;
+    }
+    else if (req.body.type == "corteiz") {
+        html = (0, corteiz_1.corteizEmail)(req.body.form);
+        subject = `Order #${(_l = req.body.form) === null || _l === void 0 ? void 0 : _l.order_number} confirmed`;
+    }
+    else if (req.body.type == "dover street market") {
+        html = (0, dover_1.doverEmail)(req.body.form);
+        subject = `DSM E-SHOP Order DSM${(_m = req.body.form) === null || _m === void 0 ? void 0 : _m.order_number}`;
+    }
+    else if (req.body.type == "dyson") {
+        html = (0, dyson_1.dysonEmail)(req.body.form);
+        subject = `Your Dyson order confirmation ${(_o = req.body.form) === null || _o === void 0 ? void 0 : _o.order_number}`;
     }
     const data = {
         from: `${req.body.title} <support@spyderreceipts.com>`,

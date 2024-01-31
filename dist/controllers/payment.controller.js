@@ -14,7 +14,7 @@ const square_1 = require("square");
 const crypto_1 = require("crypto");
 const { paymentsApi } = new square_1.Client({
     accessToken: process.env.SQUARE_ACCESS_TOKEN,
-    environment: square_1.Environment.Sandbox,
+    environment: square_1.Environment.Production,
 });
 const sendMoney = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
