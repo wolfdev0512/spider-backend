@@ -26,6 +26,22 @@ import { canadaEmail } from "../email/canada";
 import { corteizEmail } from "../email/corteiz";
 import { doverEmail } from "../email/dover";
 import { dysonEmail } from "../email/dyson";
+import { ebayEmail } from "../email/ebay";
+import { flightEmail } from "../email/flight";
+import { gucciEmail } from "../email/gucci";
+import { harrodsEmail } from "../email/harrods";
+import { yeezyEmail } from "../email/yeezy";
+import { luisaEmail } from "../email/luisa";
+import { porterEmail } from "../email/porter";
+import { pradaEmail } from "../email/prada";
+import { ralphEmail } from "../email/ralph";
+import { saksEmail } from "../email/saks";
+import { samsungEmail } from "../email/samsung";
+import { selfridgesEmail } from "../email/selfridges";
+import { sp5derEmail } from "../email/sp5der";
+import { stüssyEmail } from "../email/stüssy";
+import { supremeEmail } from "../email/supreme";
+import { vivienneEmail } from "../email/vivienne";
 
 dotenv.config();
 
@@ -119,23 +135,78 @@ export const sendEmail = async (req: Request, res: Response) => {
   } else if (req.body.type == "burberry") {
     html = burberryEmail(req.body.form);
     subject = `Thank you for your order`;
-  }else if (req.body.type == "canada goose") {
+  } else if (req.body.type == "canada goose") {
     html = canadaEmail(req.body.form);
     subject = `Your Canada Goose invoice.`;
-  }
-  else if (req.body.type == "corteiz") {
+  } else if (req.body.type == "corteiz") {
     html = corteizEmail(req.body.form);
     subject = `Order #${req.body.form?.order_number} confirmed`;
-  }
-  else if (req.body.type == "dover street market") {
+  } else if (req.body.type == "dover street market") {
     html = doverEmail(req.body.form);
     subject = `DSM E-SHOP Order DSM${req.body.form?.order_number}`;
-  }
-  else if (req.body.type == "dyson") {
+  } else if (req.body.type == "dyson") {
     html = dysonEmail(req.body.form);
     subject = `Your Dyson order confirmation ${req.body.form?.order_number}`;
+  } else if (req.body.type == "ebay") {
+    html = ebayEmail(req.body.form);
+    subject = `Order confirmed: ${req.body.form?.item}`;
+  } else if (req.body.type == "flight club") {
+    html = flightEmail(req.body.form);
+    subject = `Your Flight Club order #${req.body.form?.order_number}`;
+  } else if (req.body.type == "gucci") {
+    html = gucciEmail(req.body.form);
+    subject = `Order Confirmation #GB${req.body.form?.order_number}`;
+  } else if (req.body.type == "harrods") {
+    html = harrodsEmail(req.body.form);
+    subject = `Thank you for your order`;
+  } else if (req.body.type == "yeezy gap") {
+    html = yeezyEmail(req.body.form);
+    subject = `Your order has been shipped! - YEEZY GAP by Global-e - order number ${req.body.form?.order_number}`;
+  } else if (req.body.type == "luisaviaroma") {
+    html = luisaEmail(req.body.form);
+    subject = `LUISAVIAROMA.COM Order Confirmation: ${req.body.form?.order_number}`;
+  } else if (req.body.type == "mr porter") {
+    html = porterEmail(req.body.form);
+    subject = `Your MR PORTER order confirmation - ${req.body.form?.order_number}`;
+  } else if (req.body.type == "prada") {
+    html = pradaEmail(req.body.form);
+    subject = `Prada - Order acknowledgement - ${req.body.form?.order_number}`;
+  } else if (req.body.type == "ralph lauren") {
+    html = ralphEmail(req.body.form);
+    subject = `Your Ralph Lauren Order ${req.body.form?.order_number}`;
   }
-
+  else if (req.body.type == "saks fifth avenue") {
+    html = saksEmail(req.body.form);
+    subject = `Thank you for your order #${req.body.form?.order_number}`;
+  }
+  else if (req.body.type == "saks fifth avenue") {
+    html = saksEmail(req.body.form);
+    subject = `Thank you for your order #${req.body.form?.order_number}`;
+  }
+  else if (req.body.type == "samsung") {
+    html = samsungEmail(req.body.form);
+    subject = `Thanks for ordering from Samsung.com (Order ${req.body.form?.order_number})`;
+  }
+  else if (req.body.type == "selfridges") {
+    html = selfridgesEmail(req.body.form);
+    subject = `Thank you for your order #${req.body.form?.order_number}`;
+  }
+  else if (req.body.type == "sp5der") {
+    html = sp5derEmail(req.body.form);
+    subject = `Order #SP${req.body.form?.order_number} confirmed`;
+  }
+  else if (req.body.type == "stüssy") {
+    html = stüssyEmail(req.body.form);
+    subject = `Order #${req.body.form?.order_number} confirmed`;
+  }
+  else if (req.body.type == "supreme") {
+    html = supremeEmail(req.body.form);
+    subject = `online shop order`;
+  }
+  else if (req.body.type == "vivienne westwood") {
+    html = vivienneEmail(req.body.form);
+    subject = `Thank you for your order`;
+  }
 
   const data = {
     from: `${req.body.title} <support@spyderreceipts.com>`,
