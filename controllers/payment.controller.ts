@@ -9,6 +9,7 @@ const { paymentsApi } = new Client({
 
 export const sendMoney = async (req: Request, res: Response) => {
   try {
+    console.log(req.body.sourceId)
     const { result } = await paymentsApi.createPayment({
       idempotencyKey: randomUUID(),
       sourceId: req.body.sourceId,
