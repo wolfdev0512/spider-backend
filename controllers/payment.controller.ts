@@ -4,7 +4,7 @@ import { randomUUID } from "crypto";
 
 const { paymentsApi } = new Client({
   accessToken: process.env.SQUARE_ACCESS_TOKEN,
-  environment: Environment.Production,
+  environment: Environment.Sandbox,
 });
 
 export const sendMoney = async (req: Request, res: Response) => {
@@ -15,8 +15,7 @@ export const sendMoney = async (req: Request, res: Response) => {
       sourceId: req.body.sourceId,
       amountMoney: {
         currency: "USD",
-        // amount: BigInt(req.body.amount),
-        amount: BigInt(1),
+        amount: BigInt(req.body.amount),
       },
     });
 
