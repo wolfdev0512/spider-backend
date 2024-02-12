@@ -6,7 +6,7 @@ interface Order {
   name: string;
   email: string;
   link: string;
-  size: number;
+  size: string;
 }
 
 interface orderDocument extends Order, Document {}
@@ -33,7 +33,7 @@ const orderSchema = new Schema<orderDocument>({
     required: true
   },
   size: {
-    type: Number,
+    type: String,
     required: true
   }
 });
