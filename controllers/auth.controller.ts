@@ -3,8 +3,14 @@ import User from "../models/User";
 import { generateToken } from "../service/helper";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+const mailchimp = require("@mailchimp/mailchimp_marketing");
 
 dotenv.config();
+
+mailchimp.setConfig({
+  apiKey: process.env.Mailchimp_apiKey,
+  server: process.env.Mailchimp_server,
+});
 
 const crypto = require("crypto");
 const mailgun = require("mailgun-js")({
@@ -118,6 +124,12 @@ export const signUp = async (req: Request, res: Response) => {
   const newUser = new User(payload);
   await newUser.save();
 
+  if (req.body.check) {
+    await mailchimp.lists.addListMember(process.env.Mailchimp_List_Id, {
+      email_address: req.body.email,
+      status: "subscribed",
+    });
+  }
   // await sendVerificationEmail(token, req.body.email);
   return res.json({
     success: true,
@@ -127,7 +139,7 @@ export const signUp = async (req: Request, res: Response) => {
 
 export const signIn = async (
   req: Request,
-  res: Response
+  res: Response,
 ): Promise<Response> => {
   if (!req.body.email || !req.body.password) {
     return res.json({
@@ -175,16 +187,14 @@ export const signIn = async (
   });
 };
 
+export const forgotPassword = async (req: Request, res: Response) => {
+  let user = await User.find({ email: req.body.email });
 
-
-export const forgotPassword = async (req:Request, res:Response) => {
-  let user = await User.find({email: req.body.email});
-
-  if(!user){
+  if (!user) {
     return res.json({
       success: false,
-      message: "Your email is not registered."
-    })
+      message: "Your email is not registered.",
+    });
   }
 
   const link = `${process.env.HOST_URL}/reset-password?token=${user[0].token}&email=${user[0].email}`;
@@ -309,7 +319,7 @@ export const forgotPassword = async (req:Request, res:Response) => {
       </div>
     </body>
     </html>`;
-  
+
   const data = {
     from: "Spyder <support@spyderreceipts.com>",
     to: user[0].email,
@@ -330,25 +340,23 @@ export const forgotPassword = async (req:Request, res:Response) => {
         "Password Reset Email Sent! Check your inbox (and spam folder) for instructions on resetting your password. If you don't receive an email, contact support.",
     });
   });
-}
+};
 
+export const resetPassword = async (req: Request, res: Response) => {
+  let user = await User.findOne({ email: req.body.email });
 
-
-export const resetPassword = async (req:Request, res:Response) => {
-  let user = await User.findOne({email: req.body.email});
-
-  if(!user){
+  if (!user) {
     return res.json({
       success: false,
-      message: "Your email is not registered."
-    })
+      message: "Your email is not registered.",
+    });
   }
 
-  if(user.token !== req.body.token){
+  if (user.token !== req.body.token) {
     return res.json({
       success: false,
-      message: "Please check gmail again."
-    })
+      message: "Please check gmail again.",
+    });
   }
 
   user.password = req.body.password;
@@ -358,4 +366,4 @@ export const resetPassword = async (req:Request, res:Response) => {
     success: true,
     message: "Password reset is successfully done",
   });
-}
+};
