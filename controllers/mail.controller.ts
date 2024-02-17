@@ -174,36 +174,28 @@ export const sendEmail = async (req: Request, res: Response) => {
   } else if (req.body.type == "ralph lauren") {
     html = ralphEmail(req.body.form);
     subject = `Your Ralph Lauren Order ${req.body.form?.order_number}`;
-  }
-  else if (req.body.type == "saks fifth avenue") {
+  } else if (req.body.type == "saks fifth avenue") {
     html = saksEmail(req.body.form);
     subject = `Thank you for your order #${req.body.form?.order_number}`;
-  }
-  else if (req.body.type == "saks fifth avenue") {
+  } else if (req.body.type == "saks fifth avenue") {
     html = saksEmail(req.body.form);
     subject = `Thank you for your order #${req.body.form?.order_number}`;
-  }
-  else if (req.body.type == "samsung") {
+  } else if (req.body.type == "samsung") {
     html = samsungEmail(req.body.form);
     subject = `Thanks for ordering from Samsung.com (Order ${req.body.form?.order_number})`;
-  }
-  else if (req.body.type == "selfridges") {
+  } else if (req.body.type == "selfridges") {
     html = selfridgesEmail(req.body.form);
     subject = `Thank you for your order #${req.body.form?.order_number}`;
-  }
-  else if (req.body.type == "sp5der") {
+  } else if (req.body.type == "sp5der") {
     html = sp5derEmail(req.body.form);
     subject = `Order #SP${req.body.form?.order_number} confirmed`;
-  }
-  else if (req.body.type == "stüssy") {
+  } else if (req.body.type == "stüssy") {
     html = stüssyEmail(req.body.form);
     subject = `Order #${req.body.form?.order_number} confirmed`;
-  }
-  else if (req.body.type == "supreme") {
+  } else if (req.body.type == "supreme") {
     html = supremeEmail(req.body.form);
     subject = `online shop order`;
-  }
-  else if (req.body.type == "vivienne westwood") {
+  } else if (req.body.type == "vivienne westwood") {
     html = vivienneEmail(req.body.form);
     subject = `Thank you for your order`;
   }
@@ -217,6 +209,7 @@ export const sendEmail = async (req: Request, res: Response) => {
 
   mailgun.messages().send(data, (error: Error, body) => {
     if (error) {
+      console.log(error);
       return res.json({
         success: false,
         message: "Error found while sending emails.",
