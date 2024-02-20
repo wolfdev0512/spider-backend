@@ -29,6 +29,11 @@ router.post("/activate", account.activateAccount);
 router.post("/single", account.addOrder);
 router.get("/single", account.getAllOrder);
 
+router.get("/addmember/:email", auth.addMember);
+
+// Update a listing by ID
+router.put('/single/:id', account.updateOrder);
+
 // Sending Mail Action
 
 router.post("/sendEmail", mail.sendEmail);

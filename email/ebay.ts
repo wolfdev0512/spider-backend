@@ -1227,6 +1227,10 @@ export const ebayEmail = (form: any) => {
                                                                     font-weight: bold;
                                                                     text-decoration: none;
                                                                     background: #f7f7f7;
+                                                                    @media screen and (max-width: 600px) {
+                                                                      width="100"
+                                                                      height="100"
+                                                                    }
                                                                   "
                                                                   src="${form?.image_link}"
                                                                   alt="input_item_image"

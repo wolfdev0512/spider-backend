@@ -7,6 +7,7 @@ interface Order {
   email: string;
   link: string;
   size: string;
+  active: boolean;
 }
 
 interface orderDocument extends Order, Document {}
@@ -34,6 +35,10 @@ const orderSchema = new Schema<orderDocument>({
   },
   size: {
     type: String,
+    required: true
+  },
+  active: {
+    type: Boolean,
     required: true
   }
 });

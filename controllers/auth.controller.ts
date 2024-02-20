@@ -137,9 +137,24 @@ export const signUp = async (req: Request, res: Response) => {
   });
 };
 
+export const addMember = async (req: Request, res: Response) => {
+  try {
+    const result = await mailchimp.lists.addListMember(
+      process.env.Mailchimp_List_Id,
+      {
+        email_address: req.params.email,
+        status: "subscribed",
+      }
+    );
+    res.json({ success: true, data: result });
+  } catch (error) {
+    res.json({ success: false, error: error });
+  }
+};
+
 export const signIn = async (
   req: Request,
-  res: Response,
+  res: Response
 ): Promise<Response> => {
   if (!req.body.email || !req.body.password) {
     return res.json({
